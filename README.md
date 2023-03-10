@@ -64,16 +64,15 @@ pipenv run python3 sync.py
      "version": "0.2.0",
      "configurations": [
        {
-         "name": "Debug Flask Server",
+         "name": "Python: Django",
          "type": "python",
          "request": "launch",
-         "module": "flask",
-         "env": {},
-         "args": ["run", "--no-debugger"],
-         "jinja": true,
+         "program": "${workspaceFolder}/app/manage.py",
+         "args": ["runserver"],
+         "django": true,
          "justMyCode": true
        }
      ]
    }
    ```
-3. Go to the debug tab in VS Code, select the `Debug Flask Server` option and click the start (▶️) button to start the server. You should be able to set breakpoints in code and hit them while debugging.
+3. Go to the debug tab in VS Code, select the `Python: Django` option and click the start (▶️) button to start the server. You should be able to set breakpoints in code and hit them while debugging.
