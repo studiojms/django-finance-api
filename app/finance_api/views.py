@@ -1,21 +1,14 @@
-from django.shortcuts import render
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-
-from .serializer import CategorySerializer, TransactionSerializer
+from rest_framework import viewsets
 
 from .models import Category, Transaction
+from .serializer import CategorySerializer, TransactionSerializer
 
 
-@api_view(["GET"])
-def list_transactions(request):
-    transactions = Transaction.objects.all()
-    serializer = TransactionSerializer(transactions, many=True)
-    return Response(serializer.data)
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 
 
-@api_view(["GET"])
-def list_categories(request):
-    categories = Category.objects.all()
-    serializer = CategorySerializer(categories, many=True)
-    return Response(serializer.data)
+class TransactionViewSet(viewsets.ModelViewSet):
+    queryset = Transaction.objects.all()
+    serializer_class = TransactionSerializer

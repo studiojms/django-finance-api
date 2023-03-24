@@ -1,17 +1,26 @@
 from rest_framework import serializers
+
 from .models import Category, Transaction
 
 
-class TransactionSerializer(serializers.ModelSerializer):
+class SimpleCategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Transaction
-        # TODO how to calculate amount based on type?
-        fields = ("date", "amount", "description", "type", "category")
+        model = Category
+        fields = ("id", "name")
 
 
 class CategorySerializer(serializers.ModelSerializer):
-    parent_category = serializers.StringRelatedField()
+    parent_category = SimpleCategorySerializer(read_only=True)
+    subcategories = SimpleCategorySerializer(many=True, read_only=True)
 
     class Meta:
         model = Category
-        fields = ("name", "parent_category")
+        fields = ("id", "name", "parent_category", "subcategories")
+
+
+class TransactionSerializer(serializers.ModelSerializer):
+    category = SimpleCategorySerializer(read_only=True)
+
+    class Meta:
+        model = Transaction
+        fields = ("id", "date", "amount", "description", "type", "category")
