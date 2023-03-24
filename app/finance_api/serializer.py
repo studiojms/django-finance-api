@@ -24,3 +24,11 @@ class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
         fields = ("id", "date", "amount", "description", "type", "category")
+
+
+class TransactionEditableSerializer(serializers.ModelSerializer):
+    category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
+
+    class Meta:
+        model = Transaction
+        fields = ("id", "date", "amount", "description", "type", "category")

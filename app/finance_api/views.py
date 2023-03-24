@@ -1,7 +1,11 @@
 from rest_framework import viewsets
 
 from .models import Category, Transaction
-from .serializer import CategorySerializer, TransactionSerializer
+from .serializer import (
+    CategorySerializer,
+    TransactionEditableSerializer,
+    TransactionSerializer,
+)
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -12,3 +16,8 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class TransactionViewSet(viewsets.ModelViewSet):
     queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
+
+    def get_serializer_class(self):
+        if self.action in ["update", "partial_update", "create"]:
+            return TransactionEditableSerializer
+        return TransactionSerializer
