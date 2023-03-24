@@ -1,7 +1,9 @@
-from rest_framework import viewsets
+from rest_framework import status, viewsets
+from rest_framework.response import Response
 
-from .models import Category, Transaction
+from .models import Account, Category, Transaction
 from .serializer import (
+    AccountSerializer,
     CategorySerializer,
     TransactionEditableSerializer,
     TransactionSerializer,
@@ -11,6 +13,18 @@ from .serializer import (
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+
+class AccountViewSet(viewsets.ModelViewSet):
+    queryset = Account.objects.all()
+    serializer_class = AccountSerializer
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.active = False
+        instance.save()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class TransactionViewSet(viewsets.ModelViewSet):
